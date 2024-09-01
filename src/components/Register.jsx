@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectName, selectPassword, selectUsername, setName, setPassword, setUsername } from "../features/users/registerSlice";
+import authServices from "../services/authServices";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
 
@@ -8,10 +10,29 @@ const Register = () => {
   const password = useSelector(selectPassword);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
-    console.log(name, username, password);
+    
+    // perform user registration
+    authServices.register({ name, username, password }) 
+      .then(response => {
+        alert(response.data.message);
+
+        // clear the form
+        dispatch(setName(''));
+        dispatch(setUsername(''));
+        dispatch(setPassword(''));
+
+        // redirect to login page
+        setTimeout(() => {
+          navigate('/login');
+        }, 500);
+      })
+      .catch(error => {
+        alert(error.response.data.message);
+      });
   }
 
   return (
