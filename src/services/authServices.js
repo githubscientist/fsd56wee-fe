@@ -6,6 +6,12 @@ const authServices = {
     },
     login: async (data) => {
         return await instance.post('/auth/login', data);
+    },
+    me: async () => {
+        return await instance.get('/auth/me');
+    },
+    logout: async () => {
+        return await instance.post('/auth/logout');
     }
 }
 

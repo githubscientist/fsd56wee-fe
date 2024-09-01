@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectPassword, selectUsername, setPassword, setUsername } from "../features/users/loginSlice";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import authServices from "../services/authServices";
+import { useEffect } from "react";
 
 const Login = () => {
 
@@ -10,6 +11,14 @@ const Login = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const user = useLoaderData();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/dashboard');
+        }
+    }, [user]);
 
     const handleLogin = (e) => {
         e.preventDefault();
